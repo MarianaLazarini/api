@@ -17,7 +17,6 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    protected $namespace = 'App\\Http\\Controllers';
     public function boot(): void
     {
         //
