@@ -1,13 +1,16 @@
 import { useState, createRef } from "react";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import axiosClient from '../../axiosClient';
+import { useLogin } from "../../Context/ContextProvider";
 
 export default function Login()
 {
     const emailRef = createRef();
     const passwordRef = createRef();
+    const navigate = useNavigate();
+    const { _setToken, _setUser } = useLogin();
 
-    const[message,setMessage]= useState (null)
+    const[message, setMessage]= useState (null)
 
     const onSubmit=(e) =>{
         e.preventDefault();
@@ -19,8 +22,9 @@ export default function Login()
         
         axiosClient.post('/login', login)
                    .then(({data}) => {
-                    console.log(data);
-                    localStorage.setItem('TOKEN', data.access_token);
+                    _setToken(data.token);
+                    _setUser(data.user);
+                    navigate('/dashboard')
                    })
                    .catch((erro)=>{
                     console.log(erro);
