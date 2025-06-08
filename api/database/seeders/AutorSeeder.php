@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\models\Autor;
 
+
 class AutorSeeder extends Seeder
 {
     /**
@@ -13,6 +14,6 @@ class AutorSeeder extends Seeder
      */
     public function run(): void
     {
-        Autor::factory(20)->create();
+        Autor::factory()->count(20)->create();
     }
 }

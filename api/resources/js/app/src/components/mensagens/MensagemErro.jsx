@@ -1,27 +1,33 @@
-import React from "react";
 
-const MenssagemErro = ({
+
+import React, { Fragment } from 'react'
+
+const MensagemErro = ({
     error,
     mensagem
 }) => {
-    return (
-        <div>
+  const unique = [...new Set(mensagem)];
+
+  return (
+    <Fragment>
+        {
             error && (
                 <div className="invalid-feedback">
                     {
-                        mensagem.map((erro , index)=>{ //erro que quero passar e o index a posição em que está a minha mensagem
-                            <p key={index} styles={{ margin:"0", color:"red"}}>
-                                <span>{mens}</span>
-                            </p>
-                        })
-                    }
+                      unique.map((mens, index)=> (
+                        <p key={index} >
+                           <span style={{ margin:"0", color:"red"}}>{mens}</span>
+                         </p>
+                      ))}
                 </div>
-
             )
-        </div>
-    )
+        }
+
+    </Fragment>
+
+  )
 }
 
-export default MensagemErro;
+export default MensagemErro
 
 

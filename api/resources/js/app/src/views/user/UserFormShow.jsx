@@ -2,58 +2,57 @@ import { Fragment, useEffect, useState } from "react";
 import axiosClient from "../../axiosClient";
 import { useNavigate, useParams } from "react-router-dom";
 
+export default function UserFormShow() {
 
-export default function UserFormShow ()
-{
     const navigate = useNavigate();
 
-    const[user, setUsers] = useState({
+    const [user, setUser] = useState({
         id: null,
-        name:'',
-        email:'',
-    })
+        name: "",
+        email: "",
+    });
 
-    const{ id } = useParams();
+    const { id } = useParams();
 
-    if(id) {
-        useEffect(() => {
-            axiosClient.get(`/user/show/${id}`)
-                .then(({ data }) => {
-                    setUsers(data.data);
-            }).catch((error) => {
-                console.log(error);
-            });
-        },[id]);
+    if (id) {
+      useEffect(() => {
+        axiosClient.get(`/user/show/${id}`)
+        .then(({ data })=>{
+            setUser(data.data);
+        }).catch((error)=>{
+            console.log(error);
+        });
+      },[id]);
     }
 
 
     const onSubmit = (e) => {
-        e.preventDefault();
-        navigate('/user/index');
+       e.preventDefault();
+       navigate('/user/index');
     }
 
-    return(
+
+    return (
         <Fragment>
             <div className="display">
-
-                <div className="card animated fadeInDown">
-                    {user.id && <h1>Consulta de Usuário: { user.name }</h1>}
+                <div className="card animated fadeinDown">
+                    {user.id && <h1>Consulta de usuário: {user.name}</h1>}
 
                     <form onSubmit={(e)=>onSubmit(e)}>
-                        <input 
-                        defaultValue={user.name} 
-                        placeholder="Nome do Usuário" 
-                        readOnly={true}/>
-
-                        <input 
-                        defaultValue={user.email} 
-                        placeholder="E-mail do Usuário" 
-                        readOnly={true}/>
-
-                    <button className="btn-cancel" onClick={(e)=>onSubmit(e)}>Cancelar</button>
+                        <input
+                            defaultValue={user.name}
+                            placeholder="Nome do Usuário"
+                            readOnly={true}
+                        />
+                        <input
+                            defaultValue={user.email}
+                            placeholder="E-mail do Usuário "
+                            readOnly={true}
+                        />
+                        <button className="btn btn-cancel">Concelar</button>
                     </form>
                 </div>
             </div>
         </Fragment>
-    )
+    );
 }

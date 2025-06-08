@@ -4,37 +4,36 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Http\Request\StoreAutorRequest;
 use App\Models\Autor;
-use App\Http\Requests\StoreAutorRequest;
-use App\Http\Requests\UpdateAutorRequest;
 
 class AutorController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index(Request $request)
     {
-        $page = $request->get('page', 1);
-        $pageSize = $request->get('pageSize', 5);
-        $dir = $request->get('dir', 'asc');
-        $props = $request->get('props', 'id');
-        $search = $request->get('search', '');
+       $page = $request->get('page',1);
+       $pageSize = $request->get('pageSize',5);
+       $dir = $request->get('dir','asc');
+       $props = $request->get('props','id');
+       $search = $request->get('search','');
 
-        $query = Autor::select('id', 'nome', 'email')
-                ->whereNull('deleted_at')
+
+       $query = Autor::select('id','nome','email')
                 ->orderBy($props, $dir);
 
-        $total = $query->count();
+      $total = $query->count();
 
-        $data = $query->offset( ($page - 1) * $pageSize) // pode usar o Autor::paginate(5);
-                      ->limit($pageSize)
-                      ->get();
+      $data = $query->offset( ( $page - 1 ) * $pageSize )
+                    ->limit($pageSize)
+                    ->get();
 
-        $totalPages = ceil($total / $pageSize);
+      $totalPages = ceil( $total / $pageSize );
 
-        return response()->json([
-            'message'=>'Relatório de Autores',
+      return response()->json([
+            "message"=>"Relatório de autores",
             'status'=>200,
             'page'=>$page,
             'pageSize'=>$pageSize,
@@ -43,97 +42,55 @@ class AutorController extends Controller
             'search'=>$search,
             'total'=>$total,
             'totalPages'=>$totalPages,
-            'data'=>$data,
-        ], 200);
+            'data'=>$data
+        ],200);
     }
 
-    public function store(StoreAutorRequest $request) //feito com request outra forma de fazer
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
-        $data = Autor::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return response()->json([
-            'message' => 'Autor Cadastrado com Sucesso',
-            'data' => $data,
-            'status' => 201,
-        ], 201);
+        //
     }
 
-    public function show(Request $request, string $id)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreAutorRequest $request)
     {
-        $data = Autor::findOrFail($id);
-
-        if (!$data) {
-            throw new HttpResponseException(
-                response()->json('Autor não localizado'),
-                404
-            );
-        }
-
-        return response()->json([
-            'message' => 'Autor localizado com Sucesso',
-            'data' => $data,
-            'status' => 200,
-        ], 200);
+        //
     }
 
-    public function update(UpdateAutorRequest  $request, string $id)
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Erro nas informações do autor',
-                'data' => $validator->errors(),
-                'status' => 404,
-            ], 404);
-        }
-
-        $data = Autor::find($id);
-
-        if (!$data) {
-            return response()->json([
-                'message' => 'Autor não localizado',
-                'data' => $id,
-                'status' => 404,
-            ], 404);
-        }
-
-        $data->name = $request->name ?? $data->name;
-        $data->email = $request->email ?? $data->email;
-
-        if ($request->has("password")) {
-            $data->password = Hash::make($request->password);
-        }
-
-        $data->save();
-
-        return response()->json([
-            'message' => 'Autor alterado com sucesso',
-            'data' => $data,
-            'status' => 200,
-        ], 200);
+        //
     }
 
-    public function destroy(Request $request, string $id)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
-        $data = Autor::find($id);
+        //
+    }
 
-        if (!$data) {
-            return response()->json([
-                'message' => 'Autor não localizado',
-                'data' => $id,
-                'status' => 404,
-            ], 404);
-        }
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
 
-        $data->delete();
-
-        return response()->json([
-            'message' => 'Autor Excluído com Sucesso',
-            'status' => 200,
-        ], 200);
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

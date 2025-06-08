@@ -22,13 +22,13 @@ class StoreAutorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email|max:100|unique:autores,email',
-            'nome' => 'required|string|max:100',
-            'cidade' => 'required|string|max:100',
-            'endereco' => 'required|string|max:100',
-            'bairro' => 'required|string|max:100',
-            'cep' => 'required|string|max:20',
-            'telefone' => 'required|string|max:100',
+            'nome'=>'required|string|max:100',
+            'cidade'=>'required|string|max:100',
+            'endereco'=>'required|string|max:100',
+            'bairro'=>'required|string|max:100',
+            'cep'=>'required|string|max:20',
+            'email'=>'required|string|email|max:100|unique:autors,email',
+            'telefone'=>'required|string|max:100',
         ];
     }
 }

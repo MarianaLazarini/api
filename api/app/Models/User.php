@@ -9,7 +9,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -20,13 +19,11 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
+     protected $fillable = [
         'name',
         'email',
         'password',
     ];
-    
-    
 
     /**
      * The attributes that should be hidden for serialization.
@@ -36,9 +33,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'update_at',
-        'created_at',
-        'deleted_at',
+        "updated_at",
+        "created_at",
+        "deleted_at",
     ];
 
     /**
@@ -54,8 +51,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function autor()
-    {
+
+    public function autor(){
         $this->hasOne(Autor::class);
     }
 }

@@ -17,13 +17,13 @@ class AutorFactory extends Factory
     public function definition(): array
     {
         return [
-            'nome'=>fake()->name(),
-            'cidade'=>fake()->city(),
-            'endereco'=>fake()->address(),
-            'bairro'=>fake()->citySuffix(),
-            'cep'=>fake()->postcode(),
-            'email'=>fake()->safeEmail(),
-            'telefone'=>fake()->tollFreePhoneNumber(),
+           'nome'=>fake()->name(),
+           'cidade'=>fake()->city(),
+           'endereco'=>fake()->address(),
+           'bairro'=>fake()->citySuffix(),
+           'cep'=>fake()->postcode(),
+           'email'=>fake()->safeEmail(),
+           'telefone'=>fake()->tollFreePhoneNumber(),
         ];
     }
 }
