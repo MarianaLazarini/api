@@ -1,79 +1,83 @@
+import React, { Fragment } from 'react'
+import axiosClient from '../../axiosClient';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useValidarDadosUser } from '../../rules/UserValidationRules';
+import Input from '../../components/input/Input';
 
+function UserFormStore() {
+    const navigate = useNavigate();
 
-    import { Fragment, useEffect, useState } from "react";
-    import axiosClient from "../../axiosClient";
-    import { Link, useNavigate } from "react-router-dom";
+    const {
+        model,
+        error,
+        formValid,
+        handleChangeField,
+        handleBlurField
+    } = useValidarDadosUser();
 
-    export default function UserFormStore() {
-
-        const navigate = useNavigate();
-
-        const [user, setUser] = useState({
-            id: null,
-            name: "",
-            email: "",
-            password:"",
-        });
-
-
-        const onSubmit = (e) => {
+    // Função do tipo Anônima
+    const onSubmit = (e) => {
         e.preventDefault();
-            axiosClient.post('/user/store', user)
-            .then(()=>{
-                setUser({});
-                console.log('Usuário incluido com sucesso ');
-                navigate('/user/index');
-            }).catch((error)=>{
-                console.log(error);
-            });
-
+        if (formValid) {
+            axiosClient.post(`/user/store`, model)
+                .then(() => {
+                    console.log('Usuário incluído com sucesso');
+                    navigate('/user/index');
+                }).catch((error) => {
+                    console.log(error);
+                })
         }
-
-        return (
-            <Fragment>
-                <div className="display">
-                    <div className="card animated fadeinDown">
-                        <h1>Inclusão do usuário</h1>
-                        <form onSubmit={(e)=>onSubmit(e)}>
-                            <input
-                                type="text"
-                                value={user.name}
-                                placeholder="Nome"
-                                onChange={
-                                    e => setUser({
-                                        ...user, name:e.target.value
-                                    })
-                                }
-                            />
-                            <input
-                                type="text"
-                                value={user.email}
-                                placeholder="E-mail"
-                                onChange={
-                                    e => setUser({
-                                        ...user, email:e.target.value
-                                    })
-                                }
-                            />
-                            <input
-                                type="password"
-                                value={user.password}
-                                placeholder="Senha"
-                                onChange={
-                                    e => setUser({
-                                        ...user, password:e.target.value
-                                    })
-                                }
-                            />
-                            <button className="btn-add">Salvar</button>
-                            <Link type="button"
-                                className="btn btn-cancel"
-                                to="/user/index" >
-                                Concelar
-                            </Link>
-                        </form>
-                    </div>
-                </div>
-            </Fragment>
-        );
     }
+
+    return (
+        <Fragment>
+            <div className="display">
+                <div className="card animated fadeinDown">
+                    <h1>Inclusão de Usuário</h1>
+
+                    <form onSubmit={(e) => onSubmit(e)}>
+                        <Input
+                            id="name"
+                            type="text"
+                            value={model.name}
+                            placeholder="Nome"
+                            handleChangeField={handleChangeField}
+                            handleBlurField={handleBlurField}
+                            error={error.name}
+                            mensagem={error.nameMensagem}
+                        />
+                        <Input
+                            id="email"
+                            type="text"
+                            value={model.email}
+                            placeholder="Email"
+                            handleChangeField={handleChangeField}
+                            handleBlurField={handleBlurField}
+                            error={error.email}
+                            mensagem={error.emailMensagem}
+                        />
+                        <Input
+                            id="password"
+                            type="text"
+                            value={model.password}
+                            placeholder="Senha"
+                            handleChangeField={handleChangeField}
+                            handleBlurField={handleBlurField}
+                            error={error.password}
+                            mensagem={error.passwordMensagem}
+                        />
+                        <button className="btn btn-edit">Salvar</button>
+                        <Link
+                            type='button'
+                            className='btn btn-cancel'
+                            to='/user/index'>
+                            Cancelar
+                        </Link>
+                    </form>
+                </div>
+            </div>
+        </Fragment>
+    )
+}
+
+export default UserFormStore

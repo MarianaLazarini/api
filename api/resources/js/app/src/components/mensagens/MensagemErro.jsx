@@ -1,5 +1,3 @@
-
-
 import React, { Fragment } from 'react'
 
 const MensagemErro = ({
@@ -29,5 +27,3 @@ const MensagemErro = ({
 }
 
 export default MensagemErro
-
-
